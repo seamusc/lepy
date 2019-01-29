@@ -1,4 +1,4 @@
 progress==1.4
 python-dateutil==2.7.3
-requests==2.19.1
+requests==2.20.0
 tabulate==0.8.2

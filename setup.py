@@ -25,7 +25,7 @@ setup(
         'idna==2.7',
         'progress==1.4',
         'python-dateutil==2.7.3',
-        'requests==2.19.1',
+        'requests==2.20.0',
         'six==1.11.0',
         'tabulate==0.8.2',
         'urllib3==1.23'
