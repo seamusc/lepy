@@ -1,4 +1,6 @@
-from setuptools import setup
+from distutils.core import setup
+from glob import glob
+from setuptools import find_packages
 
 
 with open('README.md', 'r') as f:
@@ -10,8 +12,9 @@ setup(
     version='0.0.1',
     author='Seamus Cawley',
     author_email='seamuscawley@gmail.com',
-    packages=['r7insight_logsearch'],
-    scripts=[],
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    py_modules=['logsearch'],
     url='http://pypi.python.org/pypi/R7Insight-Logsearch/',
     license='LICENSE',
     description='Python API to the Rapid7 Insight Log Search API',
