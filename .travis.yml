@@ -1,10 +1,15 @@
 language: python
 python:
-  - "2.7"
+  - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
+  - 3.6
 cache: pip
 install:
   - pip install -r requirements.pip
   - pip install -r test_requirements.pip
   - pip install -e .
 script:
+  - ./tools/run_pylint.sh
   - python -m pytest
