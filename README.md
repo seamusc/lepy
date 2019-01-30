@@ -1,5 +1,7 @@
 # LogSearch API
 
+[![Build Status](https://api.travis-ci.org/seamusc/lepy.svg?branch=master)](https://travis-ci.org/seamusc/lepy)
+
 lepy is a Python library to enable access to the Rapid7 [Log Search API](https://insightops.help.rapid7.com/docs/using-log-search) in an easy to use, programatic manner. 
 
 
