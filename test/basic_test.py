@@ -39,4 +39,4 @@ def test_load_logsearch_with_invalid_region():
     with pytest.raises(ValueError) as excinfo:
         ls = LogSearch(api_key='dummy_key', region='FR')
 
-    assert str(excinfo.value) == "Unrecognised region 'FR' valid regions are [EU, CA, AU, US]"
+    assert str(excinfo.value) == "Unrecognised region 'FR' valid regions are [EU, US, CA, AU]"
