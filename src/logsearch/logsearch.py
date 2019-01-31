@@ -38,7 +38,7 @@ class LogSearch(object):
             super(Exception).__init__(self, message)
 
 
-    REGIONS = {'EU', 'US', 'CA', 'AU'}
+    REGIONS = ['EU', 'US', 'CA', 'AU']
 
     class Query(object):
 
@@ -126,25 +126,25 @@ class LogSearch(object):
         def display(self, table_format=None):
             if self.__error:
                 raise LogSearch.APIError("There was an api error")
-            print json.dumps(self.__resp.json()['leql'], indent=4, sort_keys=True)
+            print(json.dumps(self.__resp.json()['leql'], indent=4, sort_keys=True))
             if 'events' in self.__resp.json():
-                print json.dumps(self.__resp.json(), indent=4, sort_keys=True)
+                print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
             elif 'statistics' in self.__resp.json():
                 from_time = self.__resp.json()['statistics']['from']
                 to_time = self.__resp.json()['statistics']['to']
                 calc_type = self.__resp.json()['statistics']['type']
                 key = self.__resp.json()['statistics'].get('key', 'global_timeseries')
-                print 'Statistics response',
+                print('Statistics response',)
                 if 'groups' in self.__resp.json()['statistics'] and self.__resp.json()['statistics']['groups']:
-                    print 'groupby(%s)' % self.__resp.json()['statistics']['key'],
-                    print 'calculate(%s)' % calc_type + ' : ' + key if key != 'global_timeseries' else calc_type
+                    print('groupby(%s)' % self.__resp.json()['statistics']['key'],)
+                    print('calculate(%s)' % calc_type + ' : ' + key if key != 'global_timeseries' else calc_type)
                     headers = ["Group", self.__resp.json()['statistics']['type']]
                     table = self.groups()
-                    print tabulate.tabulate(table, headers=headers, tablefmt=table_format)
+                    print(tabulate.tabulate(table, headers=headers, tablefmt=table_format))
                     return
                 if 'timeseries' in self.__resp.json()['statistics'] and self.__resp.json()['statistics']['timeseries']:
-                    print 'calculate(', calc_type + ' : ' + key if key != 'global_timeseries' else calc_type, ')'
+                    print('calculate(', calc_type + ' : ' + key if key != 'global_timeseries' else calc_type, ')')
 
                     table = []
                     headers = ["Timestamp", calc_type + ' : ' + key if key != 'global_timeseries' else calc_type]
@@ -154,10 +154,10 @@ class LogSearch(object):
                     for ts in timeseries:
                         table.append((ms_to_date_string(timestamp), str(ts[calc_type]), ))
                         timestamp += interval
-                    print tabulate.tabulate(table, headers=headers, tablefmt=table_format)
+                    print(tabulate.tabulate(table, headers=headers, tablefmt=table_format))
                     return
 
-                print json.dumps(self.__resp.json(), indent=4, sort_keys=True)
+                print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
 
         @staticmethod
@@ -223,7 +223,7 @@ class LogSearch(object):
         """
         data = map(lambda x: (x['name'], x['id'],), filter(lambda x: name in x['name'], self.get_logs()))
         if display:
-            print tabulate.tabulate(data, headers=["Log Name", "Log Id"])
+            print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
         return data
 
     def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, progress=True, limit=500, query_params={}):
