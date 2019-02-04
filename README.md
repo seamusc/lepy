@@ -5,9 +5,16 @@
 lepy is a Python library to enable access to the Rapid7 [Log Search API](https://insightops.help.rapid7.com/docs/using-log-search) in an easy to use, programatic manner. 
 
 
+### Install
 
 ```
->>> from r7insight_logsearch import LogSearch
+python setup.py install
+```
+
+### Example usage
+
+```
+>>> from logsearch.logsearch import LogSearch
 >>> ls = LogSearch(API_KEY)
 >>> web_log_id = 'e1dc8460-c28e-434e-b990-dd0faea894a8'
 >>> query = 'where(response_code=500) calculate(count)'
