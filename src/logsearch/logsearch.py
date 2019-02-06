@@ -54,7 +54,7 @@ class LogSearch(object):
                 self.__progress = None
 
         def poll_query(self):
-            while True:
+            while self.__resp.status_code == 202:
                 res = self.__resp.json()
                 continue_url = res['links'][0]['href']
                 percentage = res['progress']
