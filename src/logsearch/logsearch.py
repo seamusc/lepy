@@ -4,8 +4,6 @@ import time
 import uuid
 
 import requests
-import tabulate
-from progress.bar import Bar
 
 session = requests.Session()
 session.headers.update({'User-Agent': 'lepy scawley@rapid7.com'})
@@ -42,13 +40,13 @@ class LogSearch(object):
 
     class Query(object):
 
-        def __init__(self, resp, progress, parent):
+        def __init__(self, resp, show_progress, parent):
             self.__resp = resp
             self.__events = []
             self.__error = False
             self.__parent = parent
 
-            if progress:
+            if show_progress:
                 self.__progress = Bar("Progress", max=100, suffix='%(percent)d%% %(elapsed)ds %(eta_td)s')
             else:
                 self.__progress = None
@@ -226,7 +224,7 @@ class LogSearch(object):
             print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
         return data
 
-    def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, progress=True, limit=500, query_params={}):
+    def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, show_progress=False, limit=500, query_params={}):
         """Perform a LEQL query against a list of logs over the specified time period
 
         Note: One of `time_range` or `from_time` is required
@@ -238,7 +236,7 @@ class LogSearch(object):
         :param time_range: The time range to search (Optional)
         :param from_time: The time in ms to search from (Optional)
         :param to_time: The time in ms to search to (Optional)
-        :param progress: Should progress be displayed (Default True)
+        :param show_progress: Should progress be displayed (Default False)
         :param limit: The limit to the number of events returned (Default 500)
         :param query_params: Any additional query parameters (Default empty)
 
@@ -249,11 +247,18 @@ class LogSearch(object):
         :type time_range: basestring
         :type from_time: int
         :type to_time: int
-        :type progress: bool
+        :type show_progress: bool
         :type limit: int
         :type query_params: dict
         :rtype: LogSearch.Query
         """
+        if show_progress:
+            try:
+                import tabulate
+                from progress.bar import Bar
+            except ImportError as e:
+                show_progress = False # Progress cannot be printed, so the flag is unset
+                print 'Visual progress indication is not available.', e
         self.__validate_query_params(query, log_ids, time_range, from_time, to_time)
         request_body = {
                 "leql": {
@@ -269,7 +274,7 @@ class LogSearch(object):
         params = {'limit': limit}
         params.update(query_params)
         res = session.post(self.__query_url, json=request_body, headers=self.headers, params=params)
-        return LogSearch.Query(res, progress, self).poll_query()
+        return LogSearch.Query(res, show_progress, self).poll_query()
 
     @staticmethod
     def __validate_query_params(query, log_ids, time_range, from_time, to_time):
