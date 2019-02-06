@@ -3,17 +3,16 @@ import requests_mock
 from logsearch.logsearch import LogSearch
 import json
 
-#__API_KEY = 'f6da7a78-35bb-496c-94ba-4aa65bdb67f3'
 __API_KEY = 'DUMMY_API_KEY'
+
 __API_KEY_URL = 'https://eu.rest.logs.insight.rapid7.com/management/organizations/apikeys'
+
 __SEARCH_QUERY_URL = "https://eu.rest.logs.insight.rapid7.com/query/logs?limit=1"
 
 __SEARCH_QUERY_RESULTS_URL = 'https://eu.rest.logs.insight.rapid7.com/query/f9eab513-2b74-49e9-8a60-421880324294:1:43e3ccb9c280164eeb5b1167164975c094a21f2b::ff9470943e7ae1b73c9f4067560a769f7007b544:?log_keys=a96d464b-acf7-43c8-b133-4df8551e718d&query=where(main)+calculate(count)&time_range=Last+24+Hours'
 
 __SEARCH_QUERY_RESPONSE_JSON = {
-    "logs": [
-        "a96d464b-acf7-43c8-b133-4df8551e718d"
-    ],
+    "logs": ["a96d464b-acf7-43c8-b133-4df8551e718d"],
     "progress": 0,
     "events": [],
     "partial": {
@@ -31,36 +30,16 @@ __SEARCH_QUERY_RESPONSE_JSON = {
         "status": 200,
         "timeseries": {
             "global_timeseries": [
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                }
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0}
             ]
         },
         "count": 0
@@ -83,9 +62,7 @@ __SEARCH_QUERY_RESPONSE_JSON = {
 }
 
 __SEARCH_QUERY_RESULTS_RESPONSE_JSON = {
-    "logs": [
-        "a96d464b-acf7-43c8-b133-4df8551e718d"
-    ],
+    "logs": ["a96d464b-acf7-43c8-b133-4df8551e718d"],
     "statistics": {
         "cardinality": 0,
         "granularity": 8640000,
@@ -101,36 +78,16 @@ __SEARCH_QUERY_RESULTS_RESPONSE_JSON = {
         "status": 200,
         "timeseries": {
             "global_timeseries": [
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 0
-                },
-                {
-                    "count": 59
-                },
-                {
-                    "count": 84
-                },
-                {
-                    "count": 0
-                }
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 0},
+                {"count": 59},
+                {"count": 84},
+                {"count": 0}
             ]
         },
         "count": 143
@@ -163,17 +120,10 @@ def test_load_logsearch_without_progress_bar():
             request_headers={'x-api-key': __API_KEY},
             text=json.dumps(__SEARCH_QUERY_RESULTS_RESPONSE_JSON)
         )
-        try:
-            ls = LogSearch(region='EU', api_key=__API_KEY)
-            result = ls.search(query='where(main) calculate(count)',
-                               log_ids=['a96d464b-acf7-43c8-b133-4df8551e718d'],
-                               time_range='Last 24 Hours',
-                               show_progress=False,
-                               limit=1)
-            print '\n\nRESULTS'
-            print result.display(table_format='csv')
-            assert result._Query__progress is None
-        except Exception as e:
-            print e
-
-    print 'DONE'
+        ls = LogSearch(region='EU', api_key=__API_KEY)
+        result = ls.search(query='where(main) calculate(count)',
+                           log_ids=['a96d464b-acf7-43c8-b133-4df8551e718d'],
+                           time_range='Last 24 Hours',
+                           show_progress=False,
+                           limit=1)
+        assert result._Query__progress is None
