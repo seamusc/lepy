@@ -128,7 +128,7 @@ class LogSearch(object):
             if 'events' in self.__resp.json():
                 print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
-            elif 'statistics' in self.__resp.json():
+            elif 'statistics' in self.__resp.json() and self.__progress:
                 from_time = self.__resp.json()['statistics']['from']
                 to_time = self.__resp.json()['statistics']['to']
                 calc_type = self.__resp.json()['statistics']['type']
@@ -155,6 +155,9 @@ class LogSearch(object):
                     print(tabulate.tabulate(table, headers=headers, tablefmt=table_format))
                     return
 
+                print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
+                return
+            else:
                 print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
 
