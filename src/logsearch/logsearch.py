@@ -227,7 +227,7 @@ class LogSearch(object):
             print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
         return data
 
-    def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, show_progress=False, limit=500, query_params={}):
+    def search(self, query='', log_keys=None, time_range=None, from_time=None, to_time=None, show_progress=False, limit=500, query_params={}):
         """Perform a LEQL query against a list of logs over the specified time period
 
         Note: One of `time_range` or `from_time` is required
@@ -235,7 +235,7 @@ class LogSearch(object):
               if `from_time` is supplied `to_time` may be supplied, or if not the current time is assumed
 
         :param query: the LEQL query to run
-        :param log_ids: a list of log ids
+        :param log_keys: a list of log keys
         :param time_range: The time range to search (Optional)
         :param from_time: The time in ms to search from (Optional)
         :param to_time: The time in ms to search to (Optional)
@@ -246,7 +246,7 @@ class LogSearch(object):
         :return: a Query Object
 
         :type query: basestring
-        :type log_ids: list
+        :type log_keys: list
         :type time_range: basestring
         :type from_time: int
         :type to_time: int
@@ -262,7 +262,7 @@ class LogSearch(object):
             except ImportError as e:
                 show_progress = False # Progress cannot be printed, so the flag is unset
                 print 'Visual progress indication is not available.', e
-        self.__validate_query_params(query, log_ids, time_range, from_time, to_time)
+        self.__validate_query_params(query, log_keys, time_range, from_time, to_time)
         request_body = {
                 "leql": {
                     "during": {
@@ -272,7 +272,7 @@ class LogSearch(object):
                         },
                     "statement": query,
                     },
-                "logs": log_ids
+                "logs": log_keys
             }
         params = {'limit': limit}
         params.update(query_params)

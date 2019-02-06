@@ -121,7 +121,7 @@ def test_logsearch_with_progress_bar():
               text=json.dumps(__SEARCH_QUERY_RESULTS_RESPONSE_JSON))
         ls = LogSearch(region='EU', api_key=__API_KEY)
         result = ls.search(query='where(main) calculate(count)',
-                           log_ids=['a96d464b-acf7-43c8-b133-4df8551e718d'],
+                           log_keys=['a96d464b-acf7-43c8-b133-4df8551e718d'],
                            time_range='Last 24 Hours',
                            show_progress=True,
                            limit=1)
@@ -141,7 +141,7 @@ def test_logsearch_without_progress_bar():
               text=json.dumps(__SEARCH_QUERY_RESULTS_RESPONSE_JSON))
         ls = LogSearch(region='EU', api_key=__API_KEY)
         result = ls.search(query='where(main) calculate(count)',
-                           log_ids=['a96d464b-acf7-43c8-b133-4df8551e718d'],
+                           log_keys=['a96d464b-acf7-43c8-b133-4df8551e718d'],
                            time_range='Last 24 Hours',
                            show_progress=False,
                            limit=1)

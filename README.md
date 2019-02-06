@@ -15,10 +15,10 @@ python setup.py install
 
 ```
 >>> from logsearch.logsearch import LogSearch
->>> ls = LogSearch(API_KEY)
->>> web_log_id = 'e1dc8460-c28e-434e-b990-dd0faea894a8'
+>>> ls = LogSearch(api_key=API_KEY)
+>>> my_log_key = 'e1dc8460-c28e-434e-b990-dd0faea894a8'
 >>> query = 'where(response_code=500) calculate(count)'
->>> result = ls.search(log_ids=[web_log_id], query=query, time_range='Last 24 Hours')
+>>> result = ls.search(log_keys=[my_log_key], query=query, time_range='Last 24 Hours')
 Progress |################################| 100% 4s 0:00:00
 >>> print result.display()
 {
