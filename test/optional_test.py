@@ -1,6 +1,7 @@
+import json
+
 import requests_mock
 from logsearch.logsearch import LogSearch
-import json
 
 __API_KEY = 'DUMMY_API_KEY'
 

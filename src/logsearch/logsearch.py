@@ -47,6 +47,7 @@ class LogSearch(object):
             self.__parent = parent
 
             if show_progress:
+                from progress.bar import Bar
                 self.__progress = Bar("Progress", max=100, suffix='%(percent)d%% %(elapsed)ds %(eta_td)s')
             else:
                 self.__progress = None
