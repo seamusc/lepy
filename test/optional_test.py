@@ -103,7 +103,39 @@ __SEARCH_QUERY_RESULTS_RESPONSE_JSON = {
 }
 
 
-def test_load_logsearch_without_progress_bar():
+def test_logsearch_with_progress_bar():
+    try:
+        import tabulate
+        from progress.bar import Bar
+    except ImportError:
+        return  # Cannot continue this test, because required dependencies are not imported
+
+    with requests_mock.Mocker() as m:
+        m.get(
+            __API_KEY_URL,
+            request_headers={'x-api-key': __API_KEY},
+            text='ok'
+        )
+        m.post(
+            __SEARCH_QUERY_URL,
+            request_headers={'x-api-key': __API_KEY, 'Content-Type': 'application/json'},
+            text=json.dumps(__SEARCH_QUERY_RESPONSE_JSON)
+        )
+        m.get(
+            __SEARCH_QUERY_RESULTS_URL,
+            request_headers={'x-api-key': __API_KEY},
+            text=json.dumps(__SEARCH_QUERY_RESULTS_RESPONSE_JSON)
+        )
+        ls = LogSearch(region='EU', api_key=__API_KEY)
+        result = ls.search(query='where(main) calculate(count)',
+                           log_ids=['a96d464b-acf7-43c8-b133-4df8551e718d'],
+                           time_range='Last 24 Hours',
+                           show_progress=True,
+                           limit=1)
+        assert result._Query__progress is not None
+
+
+def test_logsearch_without_progress_bar():
     with requests_mock.Mocker() as m:
         m.get(
             __API_KEY_URL,
