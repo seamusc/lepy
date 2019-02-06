@@ -2,3 +2,9 @@ venv/
 *.pyc
 .vscode
 dev_tools.py
+
+# IDE
+.idea/
+build/
+dist/
+src/r7insight_logsearch.egg-info/
