@@ -12,7 +12,7 @@ try:
     VISUAL_EFFECTS_ENABLED = True
 except ImportError as e:
     VISUAL_EFFECTS_ENABLED = False
-    print 'Visual effects are disabled.', e
+    print('Visual effects are disabled.' + str(e))
 
 session = requests.Session()
 session.headers.update({'User-Agent': 'lepy scawley@rapid7.com'})
@@ -238,7 +238,7 @@ class LogSearch(object):
             if VISUAL_EFFECTS_ENABLED:
                 print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
             else:
-                print data
+                print(data)
         return data
 
     def search(self, query='', log_keys=None, time_range=None, from_time=None, to_time=None, show_progress=False, limit=500, query_params={}):
