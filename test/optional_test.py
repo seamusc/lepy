@@ -1,7 +1,8 @@
 import json
 
 import requests_mock
-from logsearch.logsearch import LogSearch
+from logsearch.logsearch import LogSearch, VISUAL_EFFECTS_ENABLED
+
 
 __API_KEY = 'DUMMY_API_KEY'
 
@@ -108,6 +109,7 @@ def test_logsearch_with_progress_bar():
         import tabulate
         from progress.bar import Bar
     except ImportError:
+        assert VISUAL_EFFECTS_ENABLED is False
         return  # Cannot continue this test, because required dependencies are not imported
 
     with requests_mock.Mocker() as m:

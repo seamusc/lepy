@@ -5,6 +5,15 @@ import uuid
 
 import requests
 
+# Import dependencies, required for visual effects
+try:
+    import tabulate
+    from progress.bar import Bar
+    VISUAL_EFFECTS_ENABLED = True
+except ImportError as e:
+    VISUAL_EFFECTS_ENABLED = False
+    print 'Visual effects are disabled.', e
+
 session = requests.Session()
 session.headers.update({'User-Agent': 'lepy scawley@rapid7.com'})
 
@@ -47,7 +56,6 @@ class LogSearch(object):
             self.__parent = parent
 
             if show_progress:
-                from progress.bar import Bar
                 self.__progress = Bar("Progress", max=100, suffix='%(percent)d%% %(elapsed)ds %(eta_td)s')
             else:
                 self.__progress = None
@@ -129,7 +137,7 @@ class LogSearch(object):
             if 'events' in self.__resp.json():
                 print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
-            elif 'statistics' in self.__resp.json() and self.__progress:
+            elif 'statistics' in self.__resp.json() and VISUAL_EFFECTS_ENABLED:
                 from_time = self.__resp.json()['statistics']['from']
                 to_time = self.__resp.json()['statistics']['to']
                 calc_type = self.__resp.json()['statistics']['type']
@@ -164,6 +172,8 @@ class LogSearch(object):
 
         @staticmethod
         def __validate_table_format(table_format):
+            if not VISUAL_EFFECTS_ENABLED:
+                return  # Visual effects are not supported
             if table_format not in tabulate.tabulate_formats and table_format != 'csv':
                 raise ValueError("Invalid table format '%s', valid values are '%s'" % (table_format, ', '.join(tabulate.tabulate_formats)))
 
@@ -225,7 +235,10 @@ class LogSearch(object):
         """
         data = map(lambda x: (x['name'], x['id'],), filter(lambda x: name in x['name'], self.get_logs()))
         if display:
-            print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
+            if VISUAL_EFFECTS_ENABLED:
+                print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
+            else:
+                print data
         return data
 
     def search(self, query='', log_keys=None, time_range=None, from_time=None, to_time=None, show_progress=False, limit=500, query_params={}):
@@ -256,13 +269,8 @@ class LogSearch(object):
         :type query_params: dict
         :rtype: LogSearch.Query
         """
-        if show_progress:
-            try:
-                import tabulate
-                from progress.bar import Bar
-            except ImportError as e:
-                show_progress = False # Progress cannot be printed, so the flag is unset
-                print 'Visual progress indication is not available.', e
+        if not VISUAL_EFFECTS_ENABLED and show_progress:
+            show_progress = False  # Disable progress bar, because visualisation features are not allowed
         self.__validate_query_params(query, log_keys, time_range, from_time, to_time)
         request_body = {
                 "leql": {
