@@ -105,11 +105,7 @@ __SEARCH_QUERY_RESULTS_RESPONSE_JSON = {
 
 
 def test_logsearch_with_progress_bar():
-    try:
-        import tabulate
-        from progress.bar import Bar
-    except ImportError:
-        assert VISUAL_EFFECTS_ENABLED is False
+    if VISUAL_EFFECTS_ENABLED is False:
         return  # Cannot continue this test, because required dependencies are not imported
 
     with requests_mock.Mocker() as m:
