@@ -1,5 +1,5 @@
 import datetime
-import json
+import json as JSON
 import time
 import uuid
 
@@ -88,7 +88,7 @@ class LogSearch(object):
 
         def events(self):
             if not self.__error:
-                return map(lambda x: x['message'], self.__events)
+                return [e['message'] for e in self.__events]
             else:
                 raise LogSearch.APIError("There was an api error")
 
@@ -126,9 +126,9 @@ class LogSearch(object):
         def display(self, table_format=None):
             if self.__error:
                 raise LogSearch.APIError("There was an api error")
-            print(json.dumps(self.__resp.json()['leql'], indent=4, sort_keys=True))
+            print(JSON.dumps(self.__resp.json()['leql'], indent=4, sort_keys=True))
             if 'events' in self.__resp.json():
-                print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
+                print(JSON.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
             elif 'statistics' in self.__resp.json():
                 from_time = self.__resp.json()['statistics']['from']
@@ -157,7 +157,7 @@ class LogSearch(object):
                     print(tabulate.tabulate(table, headers=headers, tablefmt=table_format))
                     return
 
-                print(json.dumps(self.__resp.json(), indent=4, sort_keys=True))
+                print(JSON.dumps(self.__resp.json(), indent=4, sort_keys=True))
                 return
 
         @staticmethod
@@ -199,7 +199,7 @@ class LogSearch(object):
     def rest_call(self, method, path, json=None, extra_headers=None, expected_status=None):
         headers = self.headers
         if extra_headers is not None:
-            headers.extend(extra_headers)
+            headers.update(extra_headers)
 
         res = session.request(method=method, url=self.__region_url + path, json=json, headers=headers)
         if expected_status and res.status_code != expected_status:
@@ -221,12 +221,12 @@ class LogSearch(object):
 
         :returns: a list of matching Logs
         """
-        data = map(lambda x: (x['name'], x['id'],), filter(lambda x: name in x['name'], self.get_logs()))
+        data = [(l['name'], l['id']) for l in self.get_logs() if name in l['name']]
         if display:
             print(tabulate.tabulate(data, headers=["Log Name", "Log Id"]))
         return data
 
-    def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, progress=True, limit=500, query_params={}):
+    def search(self, query='', log_ids=None, time_range=None, from_time=None, to_time=None, progress=True, limit=500, query_params=None):
         """Perform a LEQL query against a list of logs over the specified time period
 
         Note: One of `time_range` or `from_time` is required
@@ -254,7 +254,7 @@ class LogSearch(object):
         :type query_params: dict
         :rtype: LogSearch.Query
         """
-        self.__validate_query_params(query, log_ids, time_range, from_time, to_time)
+        self.__validate_query_params(log_ids, time_range, from_time, to_time)
         request_body = {
                 "leql": {
                     "during": {
@@ -272,7 +272,7 @@ class LogSearch(object):
         return LogSearch.Query(res, progress, self).poll_query()
 
     @staticmethod
-    def __validate_query_params(query, log_ids, time_range, from_time, to_time):
+    def __validate_query_params(log_ids, time_range, from_time, to_time):
         """
         Validate that the query parameters are correct
         """
