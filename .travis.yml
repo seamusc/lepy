@@ -13,8 +13,7 @@ install:
   - pip install -e .
 script:
   - ./tools/run_pylint.sh
-  - coverage run test/*_test.py
+  - ./tools/check_code_coverage.sh
   - python -m pytest
-
 after_success:
   - codecov
