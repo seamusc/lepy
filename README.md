@@ -44,3 +44,12 @@ Timestamp                   count
 27/01/19 22:39:11.751000      101
 ```
 
+
+### Notes
+Visual progress bar will not be shown if following dependencies are not installed:
+ - `tabulate`
+ - `progress`
+
+To enable visual progress bar run following instruction:
+
+ ```pip install tabulate progress```
