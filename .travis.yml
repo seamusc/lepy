@@ -9,7 +9,12 @@ cache: pip
 install:
   - pip install -r requirements.pip
   - pip install -r test_requirements.pip
+  - pip install codecov
   - pip install -e .
 script:
   - ./tools/run_pylint.sh
+  - coverage run test/*_test.py
   - python -m pytest
+
+after_success:
+  - codecov
