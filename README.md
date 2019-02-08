@@ -1,8 +1,6 @@
 # LogSearch API
 
 [![Build Status](https://api.travis-ci.org/seamusc/lepy.svg?branch=master)](https://travis-ci.org/seamusc/lepy)
-
-
 [![Code Coverage](https://img.shields.io/codecov/c/github/seamusc/lepy/master.svg?style=flat)](https://travis-ci.org/seamusc/lepy)
 
 
