@@ -1,4 +1,5 @@
 codecov:
+  branch: master
   notify:
     require_ci_to_pass: yes
 
@@ -9,8 +10,11 @@ coverage:
 
   status:
     project: yes
+      target: 20%
     patch: yes
+      target: 20%
     changes: no
+      target: 20%
 
 parsers:
   gcov:
