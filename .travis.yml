@@ -13,8 +13,8 @@ install:
   - pip install -e .
 script:
   - ./tools/run_pylint.sh
-  - bash < (curl -s https://codecov.io/bash)
   - ./tools/check_code_coverage.sh
   - python -m pytest
 after_success:
   - codecov
+  - bash <(curl -s https://codecov.io/bash)
