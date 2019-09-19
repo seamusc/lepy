@@ -28,7 +28,7 @@ setup(
         'requests==2.20.0',
         'six==1.11.0',
         'tabulate==0.8.2',
-        'urllib3==1.23'
+        'urllib3==1.24.2'
     ],
     classifiers=[
         'Intended Audience :: Developers',
