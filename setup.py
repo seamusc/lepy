@@ -20,7 +20,7 @@ setup(
     description='Python API to the Rapid7 Insight Log Search API',
     long_description=long_description,
     install_requires=[
-        'certifi==2018.4.16',
+        'certifi==2022.12.7',
         'chardet==3.0.4',
         'idna==2.7',
         'progress==1.4',
